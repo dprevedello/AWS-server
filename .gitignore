@@ -1,0 +1,15 @@
+# Certificati SSL (non committare mai le chiavi private!)
+ssl/
+
+# Dati del database
+data/
+
+# File PHP del sito (opzionale, rimuovi se vuoi versionare il sito)
+# www/
+
+# File di ambiente con credenziali
+.env
+
+# OS
+.DS_Store
+Thumbs.db

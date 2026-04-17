@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  mariadb:
+    image: linuxserver/mariadb
+    container_name: mariadb
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - MYSQL_ROOT_PASSWORD=123456
+      - TZ=Europe/Rome
+      - MYSQL_DATABASE=isisPonti
+      - MYSQL_USER=johnsmith
+      - MYSQL_PASSWORD=123456
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data/mysql:/config
+    restart: unless-stopped
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    depends_on:
+      - mariadb
+    environment:
+      - PMA_HOST=mariadb
+      - PMA_ABSOLUTE_URI=https://tuodominio/pma/
+    restart: unless-stopped
+
+  webapp:
+    image: php:8.2-apache
+    container_name: webapp
+    depends_on:
+      - mariadb
+    volumes:
+      - ./www:/var/www/html
+    restart: unless-stopped
+
+  ftp:
+    image: fauria/vsftpd
+    container_name: ftp
+    environment:
+      - FTP_USER=johnsmith
+      - FTP_PASS=123456
+      - PASV_ADDRESS=0.0.0.0
+      - PASV_MIN_PORT=15000
+      - PASV_MAX_PORT=15100
+    ports:
+      - "21:21"
+      - "15000-15100:15000-15100"
+    volumes:
+      - ./www:/home/vsftpd/johnsmith
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    container_name: proxy
+    depends_on:
+      - phpmyadmin
+      - webapp
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - ./ssl:/etc/nginx/certs
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    restart: unless-stopped
