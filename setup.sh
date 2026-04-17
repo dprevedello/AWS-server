@@ -24,7 +24,7 @@ else
 fi
 
 # Controlla che docker compose sia disponibile
-if ! docker-compose version &> /dev/null; then
+if ! docker-compose --version &> /dev/null; then
   echo "⚠️  Docker Compose plugin non trovato. Installazione in corso..."
   sudo apt install -y docker-compose
 fi
@@ -93,3 +93,10 @@ else
   echo "❌ Errore durante l'avvio dei container."
   exit 1
 fi
+
+# Aggiunge il tuo utente al gruppo docker
+sudo usermod -aG docker $USER
+
+# Applica il gruppo senza dover fare logout/login
+newgrp docker
+
