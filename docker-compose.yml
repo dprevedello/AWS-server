@@ -39,20 +39,24 @@ services:
       - ./www:/var/www/html
     restart: unless-stopped
 
-  ftp:
-    image: fauria/vsftpd
+ftp:
+    image: akue/vsftpd
     container_name: ftp
     environment:
       - FTP_USER=johnsmith
       - FTP_PASS=123456
+      - SSL_ENABLE=YES
+      - TLS_CERT=cert.pem
+      - TLS_KEY=key.pem
       - PASV_ADDRESS=0.0.0.0
       - PASV_MIN_PORT=15000
       - PASV_MAX_PORT=15100
     ports:
-      - "21:21"
+      - "20-21:20-21"
       - "15000-15100:15000-15100"
     volumes:
-      - ./www:/home/vsftpd/johnsmith
+      - ./www:/home/vsftpd
+      - ./ssl:/etc/vsftpd/cert
     restart: unless-stopped
 
   nginx:
