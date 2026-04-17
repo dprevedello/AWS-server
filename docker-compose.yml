@@ -39,7 +39,7 @@ services:
       - ./www:/var/www/html
     restart: unless-stopped
 
-ftp:
+  ftp:
     image: akue/vsftpd
     container_name: ftp
     environment:
