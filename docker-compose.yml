@@ -29,7 +29,9 @@ services:
     restart: unless-stopped
 
   webapp:
-    image: php:8.2-apache
+    build:
+      context: .
+      dockerfile: Dockerfile.php-apache
     container_name: webapp
     depends_on:
       - mariadb
