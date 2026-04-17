@@ -34,7 +34,7 @@ git clone https://github.com/dprevedello/AWS-server.git
 cd AWS-server
 
 # Rendi eseguibili gli script
-chmod +x setup.sh generate-ssl.sh
+chmod u+x setup.sh generate-ssl.sh
 
 # Esegui il setup completo (sostituisci con il tuo dominio AWS)
 ./setup.sh "*.compute-1.amazonaws.com"
