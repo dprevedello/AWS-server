@@ -15,7 +15,7 @@ echo ""
 # 1. Controlla che Docker sia installato
 if ! command -v docker &> /dev/null; then
   echo "⚠️  Docker non trovato. Installazione in corso..."
-  sudo apt update && sudo apt upgrade -y && sudo apt install -y docker.io
+  sudo apt update &> /dev/null && sudo apt upgrade -y &> /dev/null && sudo apt install -y docker.io
   sudo systemctl enable docker
   sudo systemctl start docker
   echo "✅ Docker installato."
