@@ -15,7 +15,7 @@ echo ""
 # 1. Controlla che Docker sia installato
 if ! command -v docker &> /dev/null; then
   echo "⚠️  Docker non trovato. Installazione in corso..."
-  sudo apt update && sudo apt install -y docker.io
+  sudo apt update && sudo apt upgrade -y && sudo apt install -y docker.io
   sudo systemctl enable docker
   sudo systemctl start docker
   echo "✅ Docker installato."
@@ -24,9 +24,9 @@ else
 fi
 
 # Controlla che docker compose sia disponibile
-if ! docker compose version &> /dev/null; then
+if ! docker-compose version &> /dev/null; then
   echo "⚠️  Docker Compose plugin non trovato. Installazione in corso..."
-  sudo apt install -y docker-compose-plugin
+  sudo apt install -y docker-compose
 fi
 
 echo ""
@@ -73,7 +73,7 @@ fi
 
 # 5. Avvia i container
 echo "🐳 Avvio dei container Docker..."
-docker compose up -d
+sudo docker-compose up -d
 
 if [ $? -eq 0 ]; then
   echo ""
